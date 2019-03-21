@@ -79,7 +79,7 @@ var deleteTask = function(id) {
   type: 'DELETE',
   url: 'https://altcademy-to-do-list-api.herokuapp.com/tasks/' + id + '?api_key=74',
   success: function (response, textStatus) {
-    printTodoList();
+    console.log(response);
   },
   error: function (request, textStatus, errorMessage) {
     console.log(errorMessage);
@@ -123,6 +123,7 @@ $(document).ready(function(){
    });
    $(document).on('click','.delete', function(event) {
      deleteTask($(this).data('id'));
+     $(this).closest('.boxSize').remove();
    });
    $(document).on('change','.mark-complete', function() {
      if (this.checked) {

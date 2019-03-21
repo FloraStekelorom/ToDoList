@@ -6,7 +6,45 @@ var printTodoList = function() {
     success: function (response, textStatus) {
       $('#todoList').empty();
       response.tasks.forEach(function (task) {
-        $('#todoList').append('<div class="row boxSize bg-white border border-light"><p class="paragraphSize"><span>&#8226; &#32; </span>'+ task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>' + '</div>');
+        $('#todoList').append('<div class="row boxSize align-items-center bg-white border border-light"><p class="paragraphSize"><span>&#8226; &#32; </span>'+ task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>' + '</div>');
+      })
+    },
+    error: function (request, textStatus, errorMessage) {
+      console.log(errorMessage);
+    }
+  });
+}
+
+var showCompletedTasks = function () {
+  $.ajax({
+    type: 'GET',
+    url: 'https://altcademy-to-do-list-api.herokuapp.com/tasks?api_key=74',
+    dataType: 'json',
+    success: function (response, textStatus) {
+      $('#todoList').empty();
+      response.tasks.forEach(function (task) {
+        if (task.completed === true) {
+          $('#todoList').append('<div class="row boxSize align-items-center bg-white border border-light"><p class="paragraphSize"><span>&#8226; &#32; </span>'+ task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>' + '</div>');
+        }
+      })
+    },
+    error: function (request, textStatus, errorMessage) {
+      console.log(errorMessage);
+    }
+  });
+}
+
+var showActiveTasks = function () {
+  $.ajax({
+    type: 'GET',
+    url: 'https://altcademy-to-do-list-api.herokuapp.com/tasks?api_key=74',
+    dataType: 'json',
+    success: function (response, textStatus) {
+      $('#todoList').empty();
+      response.tasks.forEach(function (task) {
+        if (task.completed === false) {
+          $('#todoList').append('<div class="row boxSize align-items-center bg-white border border-light"><p class="paragraphSize"><span>&#8226; &#32; </span>'+ task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>' + '</div>');
+        }
       })
     },
     error: function (request, textStatus, errorMessage) {
@@ -93,4 +131,13 @@ $(document).ready(function(){
        taskActive($(this).data('id'));
      }
    });
+   $(document).on('click','#completedTask', function() {
+     showCompletedTasks();
+   })
+   $(document).on('click','#activeTask', function() {
+     showActiveTasks();
+   })
+   $(document).on('click','#showAllTasks', function() {
+     printTodoList();
+   })
 });

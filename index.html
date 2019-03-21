@@ -23,7 +23,9 @@
       </div>
       <div class="row">
         <div class="col-xs-12 mx-auto inputRow">
-          <input class="inputBox" type="text" placeholder="What needs to be done?">
+          <form id="addTask" action="index.html" method="post">
+            <input id="inputBox" name="task" type="text" placeholder="What needs to be done?" required/>
+          </form>
         </div>
         <div id="todoList">
 

@@ -6,7 +6,7 @@ var printTodoList = function() {
     success: function (response, textStatus) {
       $('#todoList').empty();
       response.tasks.forEach(function (task) {
-        $('#todoList').append('<div class="row"><p class="col-xs-8">' + task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button>');
+        $('#todoList').append('<div class="row"><p class="col-xs-8">' + task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
       })
     },
     error: function (request, textStatus, errorMessage) {
@@ -49,6 +49,21 @@ var deleteTask = function(id) {
 });
 }
 
+var taskCompleted = function(id) {
+  $.ajax({
+    type: 'PUT',
+    url: 'https://altcademy-to-do-list-api.herokuapp.com/tasks/' + id +'/mark_complete?api_key=74',
+    dataType: 'json',
+    success: function (response, textStatus) {
+      printTodoList();
+    },
+    error: function (request, textStatus, errorMessage) {
+      console.log(errorMessage);
+    }
+  });
+}
+
+
 $(document).ready(function(){
   printTodoList();
    $('#addTask').on('submit', function(event) {
@@ -58,9 +73,9 @@ $(document).ready(function(){
    $(document).on('click','.delete', function(event) {
      deleteTask($(this).data('id'));
    });
-
-
-
-
-
+   $(document).on('change','.mark-complete', function(event) {
+     if (this.checked) {
+       taskCompleted($(this).data('id'));
+     }
+   });
 });

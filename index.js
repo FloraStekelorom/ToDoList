@@ -6,7 +6,7 @@ var printTodoList = function() {
     success: function (response, textStatus) {
       $('#todoList').empty();
       response.tasks.forEach(function (task) {
-        $('#todoList').append('<div class="row"><p class="col-xs-8">' + task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
+        $('#todoList').append('<div class="row boxSize bg-white border border-light"><p class="paragraphSize"><span>&#8226; &#32; </span>'+ task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>' + '</div>');
       })
     },
     error: function (request, textStatus, errorMessage) {
@@ -86,7 +86,7 @@ $(document).ready(function(){
    $(document).on('click','.delete', function(event) {
      deleteTask($(this).data('id'));
    });
-   $(document).on('change','.mark-complete', function(event) {
+   $(document).on('change','.mark-complete', function() {
      if (this.checked) {
        taskCompleted($(this).data('id'));
      } else {
